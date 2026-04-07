@@ -584,7 +584,7 @@
       <p class="opening-text cute-font">
         A tiny lilac world, a sweet song, and a page waiting just for Nurul Nuwairah.
       </p>
-      <button class="open-btn" id="openBtn">Open your page ✨</button>
+      <button class="open-btn" id="openBtn" onclick="startExperience()">Open your page ✨</button>
     </div>
   </section>
 
@@ -805,7 +805,7 @@
 
     musicBtnCountdown.addEventListener('click', toggleMusic);
     musicBtnMain.addEventListener('click', toggleMusic);
-    musicFab.addEventListener('click', toggleMusic);
+    if (musicFab) musicFab.addEventListener('click', toggleMusic);
 
     function hideScreen(el) {
       el.classList.add('hidden');
@@ -875,7 +875,7 @@
       document.getElementById('seconds').textContent = pad(seconds);
     }
 
-    openBtn.addEventListener('click', async () => {
+    async function startExperience() {
       await playMusic();
       hideScreen(openingScreen);
       setTimeout(() => {
@@ -885,12 +885,17 @@
         if (now < target) {
           showScreen(countdownScreen);
           updateCountdown();
+          if (countdownInterval) clearInterval(countdownInterval);
           countdownInterval = setInterval(updateCountdown, 1000);
         } else {
           revealMainPage();
         }
       }, 650);
-    });
+    }
+
+    if (openBtn) {
+      openBtn.addEventListener('click', startExperience);
+    }
 
     function showMessage() {
       document.getElementById('hiddenMessage').classList.toggle('show');
